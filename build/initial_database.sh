@@ -6,15 +6,15 @@ ENABLED_LOG_DOCKER=1
 
 function log() {
     
-    patterLog="$(date +'%y-%m-%d-%H:%M:%S') dockerfile - $1"
+    patternLog="$(date +'%y-%m-%d-%H:%M:%S') dockerfile - $1"
 
-    echo $patterLog
+    echo $patternLog
     
     fileLogSqlServer="/var/opt/mssql/log/errorlog";
     
     if [ $ENABLED_LOG_DOCKER -eq 1 ] && [ -f $fileLogSqlServer ]
     then
-        echo $patterLog >> $fileLogSqlServer
+        echo $patternLog >> $fileLogSqlServer
     fi
 }
 
@@ -62,6 +62,7 @@ function executeScriptsInitialData() {
 }
 
 function init(){
+   
     sqlReadyTimeout;
 
     log "executing init"         
