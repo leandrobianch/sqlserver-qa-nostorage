@@ -1,7 +1,7 @@
 # definindo a imagem base
 FROM mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
 
-# variáveis de ambiente
+# variáveis de ambiente, que serão utilizadas dentro do initialdatabase.sh
 ENV DATABASE_NAME ''
 ENV USERNAME_APPLICATION ''
 ENV PASSWORD_APPLICATION ''
@@ -30,5 +30,5 @@ RUN chmod +x -R /app/
 # definição do script 'startup.sh'
 CMD /bin/bash ./startup.sh
 
-# definição do usuário mssql com menos previlegios dando segurançao ao container
+# definição do usuário mssql com menos previlegios
 USER mssql
