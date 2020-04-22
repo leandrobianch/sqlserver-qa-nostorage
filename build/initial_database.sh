@@ -3,31 +3,21 @@ HOST_NAME_SQL_SERVER=localhost
 DEFAULT_SCHEMA=dbo
 TIMEOUT_UP_SQL_SERVER=15
 ENABLED_LOG_DOCKER=1
+FILE_LOG_SQL_SERVER=/var/opt/mssql/log/errorlog
 
-function log() {
+log() {
     
     patternLog="$(date +'%y-%m-%d-%H:%M:%S') dockerfile - $1"
 
     echo $patternLog
     
-    fileLogSqlServer="/var/opt/mssql/log/errorlog";
-    
-    if [ $ENABLED_LOG_DOCKER -eq 1 ] && [ -f $fileLogSqlServer ]
+    if [ $ENABLED_LOG_DOCKER -eq 1 ] && [ -f $FILE_LOG_SQL_SERVER ]
     then
-        echo $patternLog >> $fileLogSqlServer
+        echo $patternLog >> $FILE_LOG_SQL_SERVER
     fi
 }
 
-function sqlReadyTimeout() {       
-    
-     log "Starting waiting sqlReadyTimeout up in: $TIMEOUT_UP_SQL_SERVER..."
-    
-     sleep $TIMEOUT_UP_SQL_SERVER
-    
-     log "Finish waiting sqlReadyTimeout up in: $TIMEOUT_UP_SQL_SERVER..."
-}
-
-function executeCommandSqlServer() {
+executeCommandSqlServer() {
     
     log "executeCommandSqlServer..."  
     
@@ -38,7 +28,7 @@ function executeCommandSqlServer() {
     sqlcmd -S $HOST_NAME_SQL_SERVER -U sa -P $SA_PASSWORD -q "$sql"
 }
 
-function executeCommandScriptInlineSqlServer() {
+executeCommandScriptInlineSqlServer() {
     
     log "executeCommandScriptInlineSqlServer..."  
     
@@ -49,7 +39,7 @@ function executeCommandScriptInlineSqlServer() {
     sqlcmd -S $HOST_NAME_SQL_SERVER -U sa -P $SA_PASSWORD -d $DATABASE_NAME -i "$sqlFile"
 }
 
-function executeScriptsInitialData() {                 
+executeScriptsInitialData() {                     
  
    log "executing executeScriptsInitialData..."              
  
@@ -61,10 +51,8 @@ function executeScriptsInitialData() {
     log "executed executeScriptsInitialData..."              
 }
 
-function init(){
+ init(){
    
-    sqlReadyTimeout;
-
     log "executing init"         
 
     executeCommandSqlServer "CREATE DATABASE $DATABASE_NAME"   
@@ -75,8 +63,6 @@ function init(){
 
     log "executed init"    
 }
-
-init;
 
 
 

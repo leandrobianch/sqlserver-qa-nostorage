@@ -11,4 +11,5 @@ docker run \
 -p 1433:1433 \
 -d $IMAGE_FULL_NAME
 
-docker exec -i -t $CONTAINER_NAME /bin/bash
+docker exec -i -t SqlServerQANoStorage /bin/bash initial_database.sh
+
